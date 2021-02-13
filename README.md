@@ -10,6 +10,10 @@ The template uses tokens that need to be replaced per scaffolded project (e.g. `
 
 ![usage](https://github.com/yoav-lavi/crispr/blob/main/usage.png)
 
+## Name
+
+Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR) technology used for targeted gene editing
+
 ## Usage
 
 ```sh
