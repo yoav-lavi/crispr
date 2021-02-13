@@ -21,9 +21,11 @@ crispr [FLAGS] [PATH]
 ```
 
 ### Arguments
+
 - `<PATH>`    The path to run `crispr` (`'.'` by default)
 
 ### Flags
+
 - `-c, --config`     The path to an alternative configuration file (`'.crispr.json'` by default)
 
 - `-d, --dry`        Dry run - prints output without making changes
@@ -33,9 +35,11 @@ crispr [FLAGS] [PATH]
 - `-V, --version`    Prints version information
 
 ## Configuration File
+
 `crispr` uses a JSON configuration file detailing the tokens to be replaced.
 
 ### Fields
+
 - `replacements` - a map (`HashMap<String, String>`) of replacement tokens to values
 - `user_replacements` - an array (`Vec<String>`) of replacements for which the user will be asked to supply a value
 
@@ -59,7 +63,12 @@ crispr [FLAGS] [PATH]
 }
 ```
 
+## Limitations
+
+- `crispr` reads files line-by-line, so a token broken into multiple lines (e.g. by formatting) will not be replaced
+
 ## Prior Art
+
 - `crispr` takes some inspiration and ideas from [Ruplacer](https://github.com/TankerHQ/ruplacer) but does not intend to replace (pun may be intended) Ruplacer as the use case and goal are different.
 
 
