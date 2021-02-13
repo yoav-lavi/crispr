@@ -81,6 +81,6 @@ crispr [FLAGS] [PATH]
 - [`clap`](https://github.com/clap-rs/clap) (Apache 2.0)
 - [`difference`](https://github.com/johannhof/difference.rs) (MIT)
 - [`colored`](https://github.com/mackwic/colored) (MPL)
-- [`ignore`](https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore) (Unlicenced)
+- [`ignore`](https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore) (MIT)
 - [`serde`](https://github.com/serde-rs/serde) (Apache 2.0)
 - [`serde_json`](https://github.com/serde-rs/json) (Apache 2.0)
