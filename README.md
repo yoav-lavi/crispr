@@ -12,7 +12,7 @@ The template uses tokens that need to be replaced per scaffolded project (e.g. `
 
 ## Name
 
-Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR_gene_editing) technology used for targeted gene editing
+Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR_gene_editing) genetic engineering technique used for targeted gene editing
 
 ## Usage
 
