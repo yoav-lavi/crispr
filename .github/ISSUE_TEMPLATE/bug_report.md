@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve (please see [CONTRIBUTING.md](https://github.com/yoav-lavi/crispr/blob/main/CONTRIBUTING.md) first)
+about: Create a report to help us improve (please see CONTRIBUTING.md first)
 title: ''
 labels: ''
 assignees: ''
