@@ -1,4 +1,4 @@
-# Contributing guidelines
+# Contribution Guidelines
 
 Thank you for considering to contribute to `crispr`!
 
