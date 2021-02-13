@@ -1,0 +1,5 @@
+{
+  "name": "{{REPO_NAME}}",
+  "version": "1.0.0",
+  "description": "{{PROJECT_NAME}} is a library {{USER_VALUE}}"
+}
