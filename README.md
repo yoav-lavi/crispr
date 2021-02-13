@@ -8,6 +8,8 @@ The template uses tokens that need to be replaced per scaffolded project (e.g. `
 
 `crispr` respects `.gitignore` files and only changes files that should be committed.
 
+The `crispr` template is automatically ignored when replacing tokens.
+
 ![usage](https://github.com/yoav-lavi/crispr/blob/main/usage.png)
 
 ## Name
