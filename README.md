@@ -67,6 +67,12 @@ crispr [FLAGS] [PATH]
 
 - `crispr` reads files line-by-line, so a token broken into multiple lines (e.g. by formatting) will not be replaced
 
+## Possible Future Improvements
+
+-[ ] Bypass `.gitignore` files
+-[ ] A better format for error messages
+-[ ] Optional removal of sections in files (to optional features in a template)
+
 ## Prior Art
 
 - `crispr` takes some inspiration and ideas from [Ruplacer](https://github.com/TankerHQ/ruplacer) but does not intend to replace (pun may be intended) Ruplacer as the use case and goal are different.
