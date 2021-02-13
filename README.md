@@ -69,9 +69,9 @@ crispr [FLAGS] [PATH]
 
 ## Possible Future Improvements
 
--[ ] Bypass `.gitignore` files
--[ ] A better format for error messages
--[ ] Optional removal of sections in files (to optional features in a template)
+- [ ] Bypass `.gitignore` files
+- [ ] A better format for error messages
+- [ ] Optional removal of sections in files (to optional features in a template)
 
 ## Prior Art
 
