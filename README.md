@@ -6,6 +6,8 @@ The template uses tokens that need to be replaced per scaffolded project (e.g. `
 
 `crispr` reads the configuration, asks the user for any needed values and makes the replacements as needed, showing a diff in the process.
 
+![usage](https://github.com/yoav-lavi/crispr/blob/main/usage.png)
+
 ## Usage
 
 ```sh
