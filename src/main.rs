@@ -1,5 +1,4 @@
 use std::path::Path;
-
 extern crate clap;
 
 use clap::{App, Arg};
@@ -7,7 +6,6 @@ use colored::*;
 use ignore::Walk;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::error::Error;
 use std::fs;
 
 mod ask;
@@ -22,7 +20,13 @@ struct Configuration {
     user_replacements: Vec<String>,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() {
+    if let Err(error) = crispr() {
+        println!("{}", error.red());
+    }
+}
+
+fn crispr() -> Result<(), &'static str> {
     let matches = App::new("crispr")
         .version("1.0")
         .author("Yoav Lavi <yoavlavi122@gmail.com>")
@@ -58,15 +62,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let raw_configuration =
-        fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file))
-            .expect("configuration not found or could not be read");
-    let configuration: Configuration =
-        serde_json::from_str(&raw_configuration).expect("could not deserialize configuration");
+        match fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file)) {
+            Ok(raw_configuration) => raw_configuration,
+            Err(_) => return Err("Could not find or read the configuration file"),
+        };
+
+    let configuration: Configuration = match serde_json::from_str(&raw_configuration) {
+        Ok(configuration) => configuration,
+        Err(_) => return Err("could not deserialize configuration"),
+    };
 
     let mut replacement_map: HashMap<String, String> = HashMap::new();
 
     for user_replacement in configuration.user_replacements {
-        let answer = ask(&format!("Select a value for {}:", user_replacement.blue()))?;
+        let answer = match ask(&format!("Select a value for {}:", user_replacement.blue())) {
+            Ok(answer) => answer,
+            Err(_) => return Err("Ran into an issue while asking for a replacement value"),
+        };
         replacement_map.insert(user_replacement, answer.to_string());
         println!();
     }
@@ -83,7 +95,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                     .file_name()
                     .map_or(false, |name| name != configuration_file)
             {
-                change_file(&replacement_map, current_path, dry)?;
+                match change_file(&replacement_map, current_path, dry) {
+                    Ok(_) => (),
+                    Err(error) => return Err(error),
+                }
             }
         }
     }

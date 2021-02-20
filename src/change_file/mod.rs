@@ -12,12 +12,18 @@ pub fn change_file(
     replacements: &HashMap<String, String>,
     file_path: &Path,
     dry: bool,
-) -> Result<(), io::Error> {
+) -> Result<(), &'static str> {
     let (changed_file, change_list) =
-        get_changed_contents_and_change_list(&replacements, file_path)?;
+        match get_changed_contents_and_change_list(&replacements, file_path) {
+            Ok((changed_file, change_list)) => (changed_file, change_list),
+            Err(_) => return Err("Could not get the changed contents for a line"),
+        };
     print_change_list(change_list, file_path);
     if !dry {
-        write_file(changed_file, file_path)?;
+        match write_file(changed_file, file_path) {
+            Ok(()) => (),
+            Err(_) => return Err("Could not write a file"),
+        }
     }
     Ok(())
 }
@@ -38,7 +44,7 @@ fn get_changed_contents_and_change_list(
     replacements: &HashMap<String, String>,
     file_path: &Path,
 ) -> Result<(String, String), io::Error> {
-    let original_file = File::open(&file_path).expect("could not open a file");
+    let original_file = File::open(&file_path)?;
     let reader = BufReader::new(original_file);
     let mut changed_file = String::new();
     let mut change_list = String::new();
@@ -64,9 +70,7 @@ fn print_change_list(change_list: String, file_path: &Path) {
 }
 
 fn write_file(contents: String, file_path: &Path) -> Result<(), io::Error> {
-    let mut changed_file = File::create(file_path).expect("could not create a replacement file");
-    changed_file
-        .write_all(contents.as_bytes())
-        .expect("could not write a replacement file");
+    let mut changed_file = File::create(file_path)?;
+    changed_file.write_all(contents.as_bytes())?;
     Ok(())
 }
