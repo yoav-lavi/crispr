@@ -23,6 +23,7 @@ struct Configuration {
 fn main() {
     if let Err(error) = crispr() {
         println!("{}", error.red());
+        std::process::exit(1);
     }
 }
 
