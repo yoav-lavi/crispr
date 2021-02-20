@@ -37,11 +37,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             Arg::with_name("config")
                 .short("c")
                 .long("config")
-                .help("The path to the configuration file ('.crispr.json') by default"),
+                .help("The path to the configuration file ('.crispr.json' by default)"),
         )
         .arg(
             Arg::with_name("PATH")
-                .help("The path to run crispr ('.') by default")
+                .help("The path to run crispr ('.' by default)")
                 .index(1),
         )
         .get_matches();
