@@ -80,7 +80,6 @@ crispr [FLAGS] [PATH]
 ## Limitations
 
 - `crispr` reads files line-by-line, so a token broken into multiple lines (e.g. by formatting) will not be replaced
-- `crispr` currently requires all files in the template to be UTF-8 text files, running `crispr` on a folder containing (non ignored) binary files will result in an error
 
 ## Prior Art
 
