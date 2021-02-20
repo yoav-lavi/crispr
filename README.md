@@ -26,7 +26,7 @@ brew install yoav-lavi/tap/crispr
 
 ### Binary
 
-Binaries can be downloaded from the releases page
+Binaries can be downloaded from the [releases page](https://github.com/yoav-lavi/crispr/releases)
 
 ## Usage
 
