@@ -10,7 +10,7 @@ The template uses tokens that need to be replaced per scaffolded project (e.g. `
 
 The `.crispr.json` configuration file itself is automatically ignored when replacing tokens.
 
-![usage](https://github.com/yoav-lavi/crispr/blob/main/usage.png)
+![usage](https://github.com/yoav-lavi/crispr/raw/main/usage.png)
 
 ## Name
 
