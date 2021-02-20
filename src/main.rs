@@ -29,7 +29,7 @@ fn main() {
 
 fn crispr() -> Result<(), &'static str> {
     let matches = App::new("crispr")
-        .version("1.0")
+        .version("0.2.0")
         .author("Yoav Lavi <yoavlavi122@gmail.com>")
         .about("Scaffolds a project from a template")
         .arg(
