@@ -1,12 +1,12 @@
-use std::path::Path;
-extern crate clap;
-
-use clap::{App, Arg};
 use colored::*;
 use ignore::Walk;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs;
+use std::path::Path;
+
+extern crate clap;
+use clap::{App, Arg};
 
 mod ask;
 use ask::*;
