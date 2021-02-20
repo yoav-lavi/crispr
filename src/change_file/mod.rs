@@ -13,13 +13,15 @@ pub fn change_file(
     file_path: &Path,
     dry: bool,
 ) -> Result<(), &'static str> {
-    let (changed_file, change_list) =
+    let (changed_file, change_list, file_changed) =
         match get_changed_contents_and_change_list(&replacements, file_path) {
-            Ok((changed_file, change_list)) => (changed_file, change_list),
+            Ok((changed_file, change_list, file_changed)) => {
+                (changed_file, change_list, file_changed)
+            }
             Err(_) => return Err("Could not get the changed contents for a line"),
         };
     print_change_list(change_list, file_path);
-    if !dry {
+    if !dry && file_changed {
         match write_file(changed_file, file_path) {
             Ok(()) => (),
             Err(_) => return Err("Could not write a file"),
@@ -43,21 +45,23 @@ fn replace_line(original_line: &str, replacements: &HashMap<String, String>) -> 
 fn get_changed_contents_and_change_list(
     replacements: &HashMap<String, String>,
     file_path: &Path,
-) -> Result<(String, String), io::Error> {
+) -> Result<(String, String, bool), io::Error> {
     let original_file = File::open(&file_path)?;
     let reader = BufReader::new(original_file);
     let mut changed_file = String::new();
     let mut change_list = String::new();
+    let mut file_changed = false;
     for (index, original_line) in reader.lines().enumerate() {
         if let Ok(original_line) = original_line {
             let (changed_line, changed) = replace_line(&original_line, replacements);
             if changed {
+                file_changed = true;
                 change_list.push_str(&get_visual_diff(&original_line, &changed_line, index));
             }
             changed_file.push_str(&format!("{}\n", changed_line));
         }
     }
-    Ok((changed_file, change_list))
+    Ok((changed_file, change_list, file_changed))
 }
 
 fn print_change_list(change_list: String, file_path: &Path) {
