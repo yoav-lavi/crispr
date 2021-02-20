@@ -85,7 +85,6 @@ crispr [FLAGS] [PATH]
 
 - `crispr` takes some inspiration and ideas from [Ruplacer](https://github.com/TankerHQ/ruplacer) but does not intend to replace (pun may be intended) Ruplacer as the use case and goal are different.
 
-
 ## Acknowledgements
 
 `crispr` uses the following dependencies:
