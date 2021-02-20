@@ -21,13 +21,12 @@ Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR_gene_editing) ge
 ### Homebrew
 
 ```sh
-brew tap yoav-lavi/tap
-brew install crispr
+brew install yoav-lavi/tap/crispr
 ```
 
 ### Binary
 
-Binaries can be downloaded from the releases page
+Binaries can be downloaded from the [releases page](https://github.com/yoav-lavi/crispr/releases)
 
 ## Usage
 
