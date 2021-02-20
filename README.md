@@ -16,6 +16,19 @@ The `.crispr.json` configuration file itself is automatically ignored when repla
 
 Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR_gene_editing) genetic engineering technique used for targeted gene editing
 
+## Install 
+
+### Homebrew
+
+```sh
+brew tap yoav-lavi/tap
+brew install crispr
+```
+
+### Binary
+
+Binaries can be downloaded from the releases page
+
 ## Usage
 
 ```sh
