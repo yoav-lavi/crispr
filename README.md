@@ -66,7 +66,7 @@ In case both file types are found, the priority is as follows:
 - `.crispr.toml`
 
 ```toml
-userReplacements = [
+user_replacements = [
     "{{REPO_NAME}}"
 ]
 
