@@ -64,8 +64,8 @@ In case both file types are found, the priority is as follows:
 
 ### Fields
 
-- `replacements` - a map (`HashMap<String, String>`) of replacement tokens to values
-- `user_replacements` - an array (`Vec<String>`) of replacements for which the user will be asked to supply a value
+- `replacements` - a map (`Option<HashMap<String, String>>`) of replacement tokens to values
+- `user_replacements` - an array (`Option<Vec<String>>`) of replacements for which the user will be asked to supply a value
 
 ### Example
 
