@@ -1,5 +1,3 @@
-# CRISPR 🧬
-
 `crispr` is a CLI tool allowing to scaffold a project from a template with a `.crispr.{toml,json}` configuration file.
 
 The template uses tokens that need to be replaced per scaffolded project, which are set in the configuration file as either user replaceable or with predetermined values.
