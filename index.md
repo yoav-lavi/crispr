@@ -68,6 +68,7 @@ In case both file types are found, the priority is as follows:
 ### Example
 
 - `.crispr.toml`
+
 {% raw %}
 ```toml
 user_replacements = [
