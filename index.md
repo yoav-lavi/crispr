@@ -68,7 +68,7 @@ In case both file types are found, the priority is as follows:
 ### Example
 
 - `.crispr.toml`
-<!-- {% raw %} -->
+{% raw %}
 ```toml
 user_replacements = [
     "{{REPO_NAME}}"
@@ -77,11 +77,11 @@ user_replacements = [
 [replacements]
 "{{YEAR}}" = "2021"
 ```
-<!-- {% endraw %} -->
+{% endraw %}
 
 - `.crispr.json`
 
-<!-- {% raw %} -->
+{% raw %}
 ```json
 {
   "replacements": {
@@ -90,7 +90,7 @@ user_replacements = [
   "userReplacements": ["{{REPO_NAME}}"]
 }
 ```
-<!-- {% endraw %} -->
+{% endraw %}
 
 ## Limitations
 
