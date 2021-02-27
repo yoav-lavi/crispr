@@ -16,7 +16,13 @@ The `.crispr.{toml,json}` configuration file itself is automatically ignored whe
 
 Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR_gene_editing) genetic engineering technique used for targeted gene editing
 
-## Install 
+## Supported Platforms
+
+`crispr` is currently built for and tested on the following platforms:
+
+- `x86_64-apple-darwin` (Intel macOS)
+
+## Install
 
 ### Homebrew
 
