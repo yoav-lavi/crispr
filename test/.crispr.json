@@ -1,4 +1,3 @@
 {
-  "replacements": {},
-  "user_replacements": ["{{REPO_NAME}}"]
+  "userReplacements": ["{{REPO_NAME}}"]
 }

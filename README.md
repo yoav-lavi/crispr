@@ -1,6 +1,6 @@
 # CRISPR 🧬
 
-`crispr` is a CLI tool allowing to scaffold a project from a template with a `.crispr.json` configuration file.
+`crispr` is a CLI tool allowing to scaffold a project from a template with a `.crispr.{toml,json}` configuration file.
 
 The template uses tokens that need to be replaced per scaffolded project (e.g. `{{REPO_NAME}}`), which are set in the configuration file as either user replaceable or with predetermined values.
 
@@ -8,7 +8,7 @@ The template uses tokens that need to be replaced per scaffolded project (e.g. `
 
 `crispr` respects `.gitignore` files and only changes files that should be committed.
 
-The `.crispr.json` configuration file itself is automatically ignored when replacing tokens.
+The `.crispr.{toml,json}` configuration file itself is automatically ignored when replacing tokens.
 
 ![usage](https://github.com/yoav-lavi/crispr/raw/main/usage.png)
 
@@ -50,7 +50,11 @@ crispr [FLAGS] [PATH]
 
 ## Configuration File
 
-`crispr` uses a JSON configuration file detailing the tokens to be replaced.
+`crispr` uses a TOML or JSON configuration file detailing the tokens to be replaced.
+
+In case both file types are found, the priority is as follows:
+- `.crispr.toml`
+- `.crispr.json`
 
 ### Fields
 
@@ -59,21 +63,25 @@ crispr [FLAGS] [PATH]
 
 ### Example
 
+- `.crispr.toml`
+
+```toml
+userReplacements = [
+    "{{REPO_NAME}}"
+]
+
+[replacements]
+"{{YEAR}}" = "2021"
+```
+
+- `.crispr.json`
+
 ```json
 {
   "replacements": {
     "{{YEAR}}": "2021"
   },
-  "user_replacements": ["{{REPO_NAME}}"]
-}
-```
-
-### Empty Configuration
-
-```json
-{
-  "replacements": {},
-  "user_replacements": []
+  "userReplacements": ["{{REPO_NAME}}"]
 }
 ```
 

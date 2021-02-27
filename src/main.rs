@@ -2,6 +2,7 @@ use colored::*;
 use ignore::Walk;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::ffi::OsStr;
 use std::fs;
 use std::path::Path;
 
@@ -14,16 +15,34 @@ use ask::*;
 mod change_file;
 use change_file::*;
 
+mod file_exists;
+use file_exists::*;
+
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 struct Configuration {
-    replacements: HashMap<String, String>,
-    user_replacements: Vec<String>,
+    replacements: Option<HashMap<String, String>>,
+    user_replacements: Option<Vec<String>>,
 }
 
 fn main() {
     if let Err(error) = crispr() {
         println!("{}", error.red());
         std::process::exit(1);
+    }
+}
+
+pub enum DefaultConfigurationPath {
+    TOML,
+    JSON,
+}
+
+impl DefaultConfigurationPath {
+    pub fn as_str(&self) -> &'static str {
+        match *self {
+            DefaultConfigurationPath::TOML => ".crispr.toml",
+            DefaultConfigurationPath::JSON => ".crispr.json",
+        }
     }
 }
 
@@ -42,7 +61,7 @@ fn crispr() -> Result<(), &'static str> {
             Arg::with_name("config")
                 .short("c")
                 .long("config")
-                .help("The path to the configuration file ('.crispr.json' by default)"),
+                .help("The path to the configuration file ('.crispr.{toml,json}' by default)"),
         )
         .arg(
             Arg::with_name("PATH")
@@ -52,8 +71,27 @@ fn crispr() -> Result<(), &'static str> {
         .get_matches();
 
     let directory_name = matches.value_of("PATH").unwrap_or(".");
-    let configuration_file = matches.value_of("config").unwrap_or(".crispr.json");
+    let configuration_file_setting = matches.value_of("config");
     let dry = matches.occurrences_of("dry") != 0;
+
+    let configuration_file = match configuration_file_setting {
+        Some(configuration_file_setting) => {
+            if !file_exists(configuration_file_setting) {
+                return Err("Could find a configuration file");
+            }
+            configuration_file_setting
+        }
+        None => {
+            let configuration_file = if file_exists(DefaultConfigurationPath::TOML.as_str()) {
+                DefaultConfigurationPath::TOML
+            } else if file_exists(DefaultConfigurationPath::JSON.as_str()) {
+                DefaultConfigurationPath::JSON
+            } else {
+                return Err("Could find a configuration file");
+            };
+            configuration_file.as_str()
+        }
+    };
 
     if dry {
         println!(
@@ -62,29 +100,64 @@ fn crispr() -> Result<(), &'static str> {
         );
     }
 
-    let raw_configuration =
-        match fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file)) {
-            Ok(raw_configuration) => raw_configuration,
-            Err(_) => return Err("Could not find or read the configuration file"),
-        };
-
-    let configuration: Configuration = match serde_json::from_str(&raw_configuration) {
-        Ok(configuration) => configuration,
-        Err(_) => return Err("could not deserialize configuration"),
+    let configuration = match Path::new(configuration_file)
+        .extension()
+        .and_then(OsStr::to_str)
+    {
+        Some("toml") => {
+            let raw_configuration =
+                match fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file)) {
+                    Ok(raw_configuration) => raw_configuration,
+                    Err(_) => return Err("Could not read the configuration file"),
+                };
+            let configuration: Configuration = match toml::from_str(&raw_configuration) {
+                Ok(configuration) => configuration,
+                Err(_) => return Err("Could not deserialize configuration"),
+            };
+            configuration
+        }
+        Some("json") => {
+            let raw_configuration =
+                match fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file)) {
+                    Ok(raw_configuration) => raw_configuration,
+                    Err(_) => return Err("Could not read the configuration file"),
+                };
+            let configuration: Configuration = match serde_json::from_str(&raw_configuration) {
+                Ok(configuration) => configuration,
+                Err(_) => return Err("Could not deserialize configuration"),
+            };
+            configuration
+        }
+        _ => return Err("Unsupported configuration extension"),
     };
 
     let mut replacement_map: HashMap<String, String> = HashMap::new();
 
-    for user_replacement in configuration.user_replacements {
-        let answer = match ask(&format!("Select a value for {}:", user_replacement.blue())) {
-            Ok(answer) => answer,
-            Err(_) => return Err("Ran into an issue while asking for a replacement value"),
-        };
-        replacement_map.insert(user_replacement, answer.to_string());
-        println!();
+    match configuration.user_replacements {
+        Some(user_replacements) => {
+            for user_replacement in user_replacements {
+                let answer = match ask(&format!("Select a value for {}:", user_replacement.blue()))
+                {
+                    Ok(answer) => answer,
+                    Err(_) => return Err("Ran into an issue while asking for a replacement value"),
+                };
+                replacement_map.insert(user_replacement, answer.to_string());
+                println!();
+            }
+        }
+        None => {}
     }
 
-    replacement_map.extend(configuration.replacements.into_iter());
+    match configuration.replacements {
+        Some(replacements) => {
+            replacement_map.extend(replacements.into_iter());
+        }
+        None => {}
+    }
+
+    if replacement_map.is_empty() {
+        return Err("No replacements specified");
+    }
 
     let directory_path = Path::new(&directory_name);
 

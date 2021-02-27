@@ -1,0 +1,5 @@
+userReplacements = [
+    "{{REPO_NAME}}"
+]
+[replacements]
+"{{YEAR}}" = "2021"
