@@ -2,7 +2,7 @@
 
 `crispr` is a CLI tool allowing to scaffold a project from a template with a `.crispr.{toml,json}` configuration file.
 
-The template uses tokens that need to be replaced per scaffolded project (e.g. `{{REPO_NAME}}`), which are set in the configuration file as either user replaceable or with predetermined values.
+The template uses tokens that need to be replaced per scaffolded project (e.g. `\{\{REPO_NAME\}\}`), which are set in the configuration file as either user replaceable or with predetermined values.
 
 `crispr` reads the configuration, asks the user for any needed values and makes the replacements as needed, showing a diff in the process.
 
