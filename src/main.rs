@@ -48,7 +48,7 @@ impl DefaultConfigurationPath {
 
 fn crispr() -> Result<(), &'static str> {
     let matches = App::new("crispr")
-        .version("0.2.1")
+        .version("0.3.0")
         .author("Yoav Lavi <yoavlavi122@gmail.com>")
         .about("Scaffolds a project from a template")
         .arg(
