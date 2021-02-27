@@ -40,7 +40,7 @@ crispr [FLAGS] [PATH]
 
 ### Flags
 
-- `-c, --config`     The path to an alternative configuration file (`'.crispr.json'` by default)
+- `-c, --config`     The path to an alternative configuration file (`'.crispr.{toml,json}'` by default)
 
 - `-d, --dry`        Dry run - prints output without making changes
 
