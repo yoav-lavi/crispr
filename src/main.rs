@@ -48,7 +48,7 @@ impl DefaultConfigurationPath {
 
 fn crispr() -> Result<(), &'static str> {
     let matches = App::new("crispr")
-        .version("0.3.0")
+        .version("0.3.1")
         .author("Yoav Lavi <yoavlavi122@gmail.com>")
         .about("Scaffolds a project from a template")
         .arg(
@@ -133,26 +133,19 @@ fn crispr() -> Result<(), &'static str> {
 
     let mut replacement_map: HashMap<String, String> = HashMap::new();
 
-    match configuration.user_replacements {
-        Some(user_replacements) => {
-            for user_replacement in user_replacements {
-                let answer = match ask(&format!("Select a value for {}:", user_replacement.blue()))
-                {
-                    Ok(answer) => answer,
-                    Err(_) => return Err("Ran into an issue while asking for a replacement value"),
-                };
-                replacement_map.insert(user_replacement, answer.to_string());
-                println!();
-            }
+    if let Some(user_replacements) = configuration.user_replacements {
+        for user_replacement in user_replacements {
+            let answer = match ask(&format!("Select a value for {}:", user_replacement.blue())) {
+                Ok(answer) => answer,
+                Err(_) => return Err("Ran into an issue while asking for a replacement value"),
+            };
+            replacement_map.insert(user_replacement, answer.to_string());
+            println!();
         }
-        None => {}
     }
 
-    match configuration.replacements {
-        Some(replacements) => {
-            replacement_map.extend(replacements.into_iter());
-        }
-        None => {}
+    if let Some(replacements) = configuration.replacements {
+        replacement_map.extend(replacements.into_iter());
     }
 
     if replacement_map.is_empty() {
