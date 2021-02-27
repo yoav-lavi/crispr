@@ -1,37 +1,112 @@
-## Welcome to GitHub Pages
+# CRISPR 🧬
 
-You can use the [editor on GitHub](https://github.com/yoav-lavi/crispr/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+`crispr` is a CLI tool allowing to scaffold a project from a template with a `.crispr.{toml,json}` configuration file.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The template uses tokens that need to be replaced per scaffolded project (e.g. `{{REPO_NAME}}`), which are set in the configuration file as either user replaceable or with predetermined values.
 
-### Markdown
+`crispr` reads the configuration, asks the user for any needed values and makes the replacements as needed, showing a diff in the process.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+`crispr` respects `.gitignore` files and only changes files that should be committed.
 
-```markdown
-Syntax highlighted code block
+The `.crispr.{toml,json}` configuration file itself is automatically ignored when replacing tokens.
 
-# Header 1
-## Header 2
-### Header 3
+![usage](https://github.com/yoav-lavi/crispr/raw/main/usage.png)
 
-- Bulleted
-- List
+## Name
 
-1. Numbered
-2. List
+Named after the [CRISPR-cas9](https://wikipedia.org/wiki/CRISPR_gene_editing) genetic engineering technique used for targeted gene editing
 
-**Bold** and _Italic_ and `Code` text
+## Supported Platforms
 
-[Link](url) and ![Image](src)
+`crispr` is currently built for and tested on the following platforms:
+
+- `x86_64-apple-darwin` (Intel macOS)
+
+## Install
+
+### Homebrew
+
+```sh
+brew install yoav-lavi/tap/crispr
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Binary
 
-### Jekyll Themes
+Binaries can be downloaded from the [releases page](https://github.com/yoav-lavi/crispr/releases)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/yoav-lavi/crispr/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Usage
 
-### Support or Contact
+```sh
+crispr [FLAGS] [PATH]
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Arguments
+
+- `<PATH>`    The path to run `crispr` (`'.'` by default)
+
+### Flags
+
+- `-c, --config`     The path to an alternative configuration file (`'.crispr.{toml,json}'` by default)
+
+- `-d, --dry`        Dry run - prints output without making changes
+
+- `-h, --help`       Prints help information
+
+- `-V, --version`    Prints version information
+
+## Configuration File
+
+`crispr` uses a TOML or JSON configuration file detailing the tokens to be replaced.
+
+In case both file types are found, the priority is as follows:
+- `.crispr.toml`
+- `.crispr.json`
+
+### Fields
+
+- `replacements` - a map (`Option<HashMap<String, String>>`) of replacement tokens to values
+- `user_replacements` - an array (`Option<Vec<String>>`) of replacements for which the user will be asked to supply a value
+
+### Example
+
+- `.crispr.toml`
+
+```toml
+user_replacements = [
+    "{{REPO_NAME}}"
+]
+
+[replacements]
+"{{YEAR}}" = "2021"
+```
+
+- `.crispr.json`
+
+```json
+{
+  "replacements": {
+    "{{YEAR}}": "2021"
+  },
+  "userReplacements": ["{{REPO_NAME}}"]
+}
+```
+
+## Limitations
+
+- `crispr` reads files line-by-line, so a token broken into multiple lines (e.g. by formatting) will not be replaced
+
+## Prior Art
+
+- `crispr` takes some inspiration and ideas from [Ruplacer](https://github.com/TankerHQ/ruplacer) but does not intend to replace (pun may be intended) Ruplacer as the use case and goal are different.
+
+## Acknowledgements
+
+`crispr` uses the following dependencies:
+
+- [`clap`](https://github.com/clap-rs/clap) (Apache 2.0)
+- [`difference`](https://github.com/johannhof/difference.rs) (MIT)
+- [`colored`](https://github.com/mackwic/colored) (MPL)
+- [`ignore`](https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore) (MIT)
+- [`serde`](https://github.com/serde-rs/serde) (Apache 2.0)
+- [`serde_json`](https://github.com/serde-rs/json) (Apache 2.0)
+- [`toml`](https://github.com/alexcrichton/toml-rs) (MIT)
