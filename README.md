@@ -103,3 +103,4 @@ userReplacements = [
 - [`ignore`](https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore) (MIT)
 - [`serde`](https://github.com/serde-rs/serde) (Apache 2.0)
 - [`serde_json`](https://github.com/serde-rs/json) (Apache 2.0)
+- [`toml`](https://github.com/alexcrichton/toml-rs) (MIT)
