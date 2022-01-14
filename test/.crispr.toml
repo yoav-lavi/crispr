@@ -1,5 +1,3 @@
-userReplacements = [
-    "{{REPO_NAME}}"
-]
+userReplacements = ["{{REPO_NAME}}"]
 [replacements]
-"{{YEAR}}" = "2021"
+"{{YEAR}}" = "2022"
