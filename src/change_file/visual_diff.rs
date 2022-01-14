@@ -10,8 +10,8 @@ pub fn get_visual_diff(original_line: &str, changed_line: &str, index: usize) ->
     for diff in diffs {
         match diff {
             Difference::Same(ref original_line) => {
-                visual_diff_add.push_str(&original_line);
-                visual_diff_remove.push_str(&original_line);
+                visual_diff_add.push_str(original_line);
+                visual_diff_remove.push_str(original_line);
             }
             Difference::Add(ref line_difference) => {
                 visual_diff_add.push_str(&line_difference.green().underline().to_string());
@@ -24,16 +24,12 @@ pub fn get_visual_diff(original_line: &str, changed_line: &str, index: usize) ->
     let mut visual_diff = String::new();
     let line_number = index + 1;
     visual_diff.push_str(&format!(
-        "{} {}: {}\n",
+        "{} {line_number}: {visual_diff_remove}\n",
         "--".red(),
-        line_number,
-        visual_diff_remove
     ));
     visual_diff.push_str(&format!(
-        "{} {}: {}\n",
-        "++".green(),
-        line_number,
-        visual_diff_add
+        "{} {line_number}: {visual_diff_add}\n",
+        "++".green()
     ));
     visual_diff
 }

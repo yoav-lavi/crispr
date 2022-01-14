@@ -14,7 +14,7 @@ pub fn change_file(
     dry: bool,
 ) -> Result<(), &'static str> {
     let (changed_file, change_list, file_changed) =
-        match get_changed_contents_and_change_list(&replacements, file_path) {
+        match get_changed_contents_and_change_list(replacements, file_path) {
             Ok((changed_file, change_list, file_changed)) => {
                 (changed_file, change_list, file_changed)
             }
@@ -58,7 +58,7 @@ fn get_changed_contents_and_change_list(
                 file_changed = true;
                 change_list.push_str(&get_visual_diff(&original_line, &changed_line, index));
             }
-            changed_file.push_str(&format!("{}\n", changed_line));
+            changed_file.push_str(&format!("{changed_line}\n"));
         }
     }
     Ok((changed_file, change_list, file_changed))
@@ -68,7 +68,7 @@ fn print_change_list(change_list: String, file_path: &Path) {
     if let Some(file_path) = file_path.to_str() {
         if !change_list.is_empty() {
             println!("{}", &format!("Changes for {}:", &file_path.blue()));
-            println!("{}", change_list);
+            println!("{change_list}");
         }
     }
 }

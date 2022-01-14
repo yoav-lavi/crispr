@@ -52,19 +52,19 @@ fn crispr() -> Result<(), &'static str> {
         .author("Yoav Lavi <yoavlavi122@gmail.com>")
         .about("Scaffolds a project from a template")
         .arg(
-            Arg::with_name("dry")
-                .short("d")
+            Arg::new("dry")
+                .short('d')
                 .long("dry")
                 .help("Dry run - prints output without making changes"),
         )
         .arg(
-            Arg::with_name("config")
-                .short("c")
+            Arg::new("config")
+                .short('c')
                 .long("config")
                 .help("The path to the configuration file ('.crispr.{toml,json}' by default)"),
         )
         .arg(
-            Arg::with_name("PATH")
+            Arg::new("PATH")
                 .help("The path to run crispr ('.' by default)")
                 .index(1),
         )
@@ -106,7 +106,7 @@ fn crispr() -> Result<(), &'static str> {
     {
         Some("toml") => {
             let raw_configuration =
-                match fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file)) {
+                match fs::read_to_string(format!("{directory_name}/{configuration_file}")) {
                     Ok(raw_configuration) => raw_configuration,
                     Err(_) => return Err("Could not read the configuration file"),
                 };
@@ -118,7 +118,7 @@ fn crispr() -> Result<(), &'static str> {
         }
         Some("json") => {
             let raw_configuration =
-                match fs::read_to_string(format!("{}/{}", &directory_name, &configuration_file)) {
+                match fs::read_to_string(format!("{directory_name}/{configuration_file}")) {
                     Ok(raw_configuration) => raw_configuration,
                     Err(_) => return Err("Could not read the configuration file"),
                 };
@@ -154,18 +154,16 @@ fn crispr() -> Result<(), &'static str> {
 
     let directory_path = Path::new(&directory_name);
 
-    for entry in Walk::new(directory_path) {
-        if let Ok(current_dir_entry) = entry {
-            let current_path = current_dir_entry.path();
-            if !Path::new(current_path).is_dir()
-                && current_path
-                    .file_name()
-                    .map_or(false, |name| name != configuration_file)
-            {
-                match change_file(&replacement_map, current_path, dry) {
-                    Ok(_) => (),
-                    Err(error) => return Err(error),
-                }
+    for entry in Walk::new(directory_path).flatten() {
+        let current_path = entry.path();
+        if !Path::new(current_path).is_dir()
+            && current_path
+                .file_name()
+                .map_or(false, |name| name != configuration_file)
+        {
+            match change_file(&replacement_map, current_path, dry) {
+                Ok(_) => (),
+                Err(error) => return Err(error),
             }
         }
     }
